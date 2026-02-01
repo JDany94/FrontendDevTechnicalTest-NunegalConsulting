@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { useCart } from "../hooks/useCart";
+import { useCart } from "../context/cart/useCart";
 import "./Header.css";
 
 const Header = () => {

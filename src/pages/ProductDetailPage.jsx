@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { api } from "../services/api";
+import ProductImage from "../components/ProductImage";
+import ProductDescription from "../components/ProductDescription";
+import ProductActions from "../components/ProductActions";
+import "./ProductDetailPage.css";
 
 const ProductDetailPage = () => {
   const { id } = useParams();
@@ -23,17 +27,56 @@ const ProductDetailPage = () => {
     fetchProduct();
   }, [id]);
 
-  if (loading) return <div>Loading product...</div>;
-  if (error) return <div>Error: {error}</div>;
-  if (!product) return <div>Product not found</div>;
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <p>Loading product...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="error-container">
+        <p>Error: {error}</p>
+        <Link to="/" className="back-link">
+          ← Back to products
+        </Link>
+      </div>
+    );
+  }
+
+  if (!product) {
+    return (
+      <div className="error-container">
+        <p>Product not found</p>
+        <Link to="/" className="back-link">
+          ← Back to products
+        </Link>
+      </div>
+    );
+  }
 
   return (
-    <div>
-      <Link to="/">← Back to list</Link>
-      <h1>
-        {product.brand} {product.model}
-      </h1>
-      <p>Price: {product.price}€</p>
+    <div className="product-detail-page">
+      <Link to="/" className="back-link">
+        ← Back to product list
+      </Link>
+
+      <div className="product-detail-container">
+        <div className="product-left">
+          <ProductImage
+            imgUrl={product.imgUrl}
+            brand={product.brand}
+            model={product.model}
+          />
+        </div>
+
+        <div className="product-right">
+          <ProductDescription product={product} />
+          <ProductActions product={product} />
+        </div>
+      </div>
     </div>
   );
 };
