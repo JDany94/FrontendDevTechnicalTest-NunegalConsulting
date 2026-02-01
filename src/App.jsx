@@ -6,6 +6,7 @@ import Header from "./components/Header";
 import ToastContainer from "./components/ToastContainer";
 import ProductListPage from "./pages/ProductListPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
+import NotFoundPage from "./pages/NotFoundPage";
 import "./App.css";
 
 const AppContent = () => {
@@ -18,6 +19,7 @@ const AppContent = () => {
         <Routes>
           <Route path="/" element={<ProductListPage />} />
           <Route path="/product/:id" element={<ProductDetailPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
       <ToastContainer toasts={toast.toasts} removeToast={toast.removeToast} />

@@ -40,7 +40,7 @@ const ProductDetailPage = () => {
   if (error) {
     return (
       <div className="error-container">
-        <p>Error: {error}</p>
+        <p>Product not found</p>
         <Link to="/" className="back-link">
           ← Back to products
         </Link>
