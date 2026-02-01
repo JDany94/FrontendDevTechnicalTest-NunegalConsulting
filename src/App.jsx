@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import { CartProvider } from "./context/cart/CartProvider";
 import { ToastProvider } from "./context/toast/ToastProvider";
 import { useToast } from "./context/toast/useToast";
@@ -29,13 +29,13 @@ const AppContent = () => {
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <CartProvider>
         <ToastProvider>
           <AppContent />
         </ToastProvider>
       </CartProvider>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
