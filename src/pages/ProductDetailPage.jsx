@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { api } from "../services/api";
+import { useCart } from "../context/cart/useCart";
 import ProductImage from "../components/ProductImage";
 import ProductDescription from "../components/ProductDescription";
 import ProductActions from "../components/ProductActions";
+import ProductDetailSkeleton from "../components/ProductDetailSkeleton";
 import "./ProductDetailPage.css";
 
 const ProductDetailPage = () => {
   const { id } = useParams();
+  const { setCurrentProduct } = useCart();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -17,22 +20,21 @@ const ProductDetailPage = () => {
       try {
         const data = await api.getProductById(id);
         setProduct(data);
+        setCurrentProduct(data);
       } catch (err) {
         setError(err.message);
+        setCurrentProduct(null);
       } finally {
         setLoading(false);
       }
     };
 
     fetchProduct();
-  }, [id]);
+    return () => setCurrentProduct(null);
+  }, [id, setCurrentProduct]);
 
   if (loading) {
-    return (
-      <div className="loading-container">
-        <p>Loading product...</p>
-      </div>
-    );
+    return <ProductDetailSkeleton />;
   }
 
   if (error) {

@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { useCart } from "../context/cart/useCart";
+import { useToast } from "../context/toast/useToast";
+import Spinner from "./Spinner";
 import "./ProductActions.css";
 
 const ProductActions = ({ product }) => {
   const { addToCart } = useCart();
+  const toast = useToast();
   const [selectedStorage, setSelectedStorage] = useState(
     product.options?.storages?.[0]?.code || null,
   );
@@ -11,24 +14,21 @@ const ProductActions = ({ product }) => {
     product.options?.colors?.[0]?.code || null,
   );
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
 
   const handleAddToCart = async () => {
     if (!selectedStorage || !selectedColor) {
-      setMessage("Please select all options");
+      toast.warning("Please select all options");
       return;
     }
 
     setLoading(true);
-    setMessage("");
 
     try {
       await addToCart(product.id, selectedColor, selectedStorage);
-      setMessage("Product added to cart");
-      setTimeout(() => setMessage(""), 3000);
+      toast.success(`${product.brand} ${product.model} added to cart!`);
     } catch (error) {
-      setMessage("Error adding to cart");
-      console.error("Error adding to cart:", error);
+      toast.error("Error adding product to cart");
+      console.error("Error adding product to cart:", error);
     } finally {
       setLoading(false);
     }
@@ -49,6 +49,7 @@ const ProductActions = ({ product }) => {
                 selectedStorage === storage.code ? "selected" : ""
               }`}
               onClick={() => setSelectedStorage(storage.code)}
+              disabled={loading}
             >
               {storage.name}
             </button>
@@ -67,6 +68,7 @@ const ProductActions = ({ product }) => {
                 selectedColor === color.code ? "selected" : ""
               }`}
               onClick={() => setSelectedColor(color.code)}
+              disabled={loading}
             >
               {color.name}
             </button>
@@ -80,11 +82,15 @@ const ProductActions = ({ product }) => {
         onClick={handleAddToCart}
         disabled={loading || !selectedStorage || !selectedColor}
       >
-        {loading ? "Adding..." : "Add to Cart"}
+        {loading ? (
+          <span className="button-loading">
+            <Spinner size="small" />
+            <span>Adding...</span>
+          </span>
+        ) : (
+          "Add to Cart"
+        )}
       </button>
-
-      {/* Feedback Message */}
-      {message && <p className="feedback-message">{message}</p>}
     </div>
   );
 };

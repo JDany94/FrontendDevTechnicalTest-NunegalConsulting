@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { api } from "../services/api";
 import SearchBar from "../components/SearchBar";
 import ProductCard from "../components/ProductCard";
+import ProductCardSkeleton from "../components/ProductCardSkeleton";
 import "./ProductListPage.css";
 
 const ProductListPage = () => {
@@ -45,8 +46,17 @@ const ProductListPage = () => {
 
   if (loading) {
     return (
-      <div className="loading-container">
-        <p>Loading products...</p>
+      <div className="product-list-page">
+        <div className="page-header">
+          <h1 className="page-title">Product List</h1>
+          <SearchBar onSearch={() => {}} />
+        </div>
+
+        <div className="products-grid">
+          {[...Array(8)].map((_, i) => (
+            <ProductCardSkeleton key={i} />
+          ))}
+        </div>
       </div>
     );
   }

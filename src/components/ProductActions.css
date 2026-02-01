@@ -96,3 +96,18 @@
     font-size: 0.9rem;
   }
 }
+
+.button-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.button-loading .spinner-container {
+  padding: 0;
+}
+
+.add-to-cart-button:disabled .spinner {
+  border-top-color: white;
+}

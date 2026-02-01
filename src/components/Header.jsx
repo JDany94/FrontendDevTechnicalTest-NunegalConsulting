@@ -3,7 +3,7 @@ import { useCart } from "../context/cart/useCart";
 import "./Header.css";
 
 const Header = () => {
-  const { cartCount } = useCart();
+  const { cartCount, currentProduct } = useCart();
   const location = useLocation();
 
   // Function to generate breadcrumbs based on the current path
@@ -19,7 +19,11 @@ const Header = () => {
         <>
           <Link to="/">Home</Link>
           <span> &gt; </span>
-          <span>Product</span>
+          <span>
+            {currentProduct
+              ? `${currentProduct.brand} ${currentProduct.model}`
+              : "Product"}
+          </span>
         </>
       );
     }
@@ -42,7 +46,7 @@ const Header = () => {
 
         <div className="header-right">
           <div className="cart-icon">
-            Cart <span className="cart-count">{cartCount}</span>
+            🛒 <span className="cart-count">{cartCount}</span>
           </div>
         </div>
       </div>
